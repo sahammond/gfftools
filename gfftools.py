@@ -25,6 +25,28 @@ class GFF(object):
     feature: a raw gff line (with tab chars, newline, etc.)
     """
 
+    def print_basic_record(self):
+        _par = 'Parent=' + ','.join(self.parent)
+        _newid = 'ID=' + self.id
+        if self.name:
+            _newname = 'Name=' + self.name
+            _comms = ';'.join([_newid, _par, _newname])
+        else:
+            _comms = ';'.join([_newid, _par])
+        fields = [self.seqid, self.source, self.type, self.start, self.end,
+                    self.score, self.strand, self.offset, _comms]
+        buff = '\t'.join(fields) + '\n'
+        return buff
+
+
+    def drop_par(self, par):
+        """par is ID of parent to remove from this record"""
+        start_par = set(self.parent)
+        drop = set(par)
+        new_par = start_par - drop
+        self.parent = list(new_par)
+
+
     def __init__(self,feature):
 
         self.raw = feature
@@ -78,6 +100,7 @@ class GFF(object):
                         self.product, self.name, self.note, self.target, self.trailing,
                         self.locus_tag]
         self.contents = [x for x in _contents if x]
+
 
 class Transcript(object):
 

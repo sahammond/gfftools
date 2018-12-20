@@ -3,7 +3,7 @@
 import sys
 import re
 
-from gfftools import GFF
+from gfftools import GFF # my custom lib. github.com/sahammond/gfftools
 
 
 def selector(gff_record, hit_mrna, hit_gene):
@@ -21,13 +21,16 @@ def selector(gff_record, hit_mrna, hit_gene):
         else:
             outbuff = ''
     elif gff_record.type == 'CDS' or gff_record.type == 'exon':
+        keep = False
         for par in gff_record.parent:
             if par in hit_mrna:
                 # drop absent parents
-                outbuff = drop_par(gff_record,hit_mrna)
+                keep = True
                 break
-            else:
-                outbuff = ''
+        if keep == True:
+            outbuff = drop_par(gff_record,hit_mrna)
+        else:
+            outbuff = ''
     else:
         outbuff = ''
 
@@ -35,16 +38,17 @@ def selector(gff_record, hit_mrna, hit_gene):
 
 
 def drop_par(gff_record, hit_mrna):
-    raw = gff_record.raw
+#    raw = gff_record.raw
     for par in gff_record.parent:
         if par not in hit_mrna:
-            raw = re.sub(par,'',raw)
+            gff_record.drop_par(par)
+#            raw = re.sub(par,'',raw)
     # drop any repeated commas due to deletions
-    raw = re.sub(',+',',',raw)
-    raw = re.sub('Parent=,','Parent=',raw)
-    raw = re.sub(',$','',raw)
-
-    return raw
+#    raw = re.sub(',+',',',raw)
+#    raw = re.sub('Parent=,','Parent=',raw)
+#    raw = re.sub(',$','',raw)
+#    import pdb; pdb.set_trace()
+    return gff_record.print_basic_record()
 
 
 def load_hits(records):
