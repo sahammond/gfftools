@@ -12,7 +12,7 @@ Transcript: object to hold exons, cds, and info associated with a
 """
 
 import re
-import fastatools
+from fastatools import *
 
 class GFF(object):
 
@@ -302,13 +302,14 @@ class Transcript(object):
                     outbuff.append("\t".join([feature.start,feature.end,"CDS"]))
 
                 if self.transcript.product:
-                    if re.findall("similar",self.transcript.product):
-                        if self.transcript.locus_tag:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.locus_tag]))
-                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
+#                    if re.findall("similar",self.transcript.product):
+                    if self.prot_desc:
+                        if self.transcript.product: ###
+                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product])) ###
+                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.prot_desc])) ###
                         else:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.parent[0]]))
-                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
+                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product])) ###
+                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.prot_desc])) ###
                     else:
                         outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product]))
                 if self.transcript.note:
@@ -405,14 +406,14 @@ class Transcript(object):
                 if feature.strand == "+":
                     outbuff.append("\t".join([feature.start,feature.end]))
                 if self.transcript.product:
-                    if re.findall("similar",self.transcript.product):
-                        if self.transcript.locus_tag:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.locus_tag]))
-                        else:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.parent[0]]))
+#                    if re.findall("similar",self.transcript.product):
+#                        if self.transcript.locus_tag:
+#                    outbuff.append("\t".join(["\t\t\tproduct",self.transcript.locus_tag]))
+#                        else:
+#                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.parent[0]]))
 #                        outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
-                    else:
-                        outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product]))
+#                    else:
+                    outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product]))
                 if self.transcript.note:
                     outbuff.append("\t".join(["\t\t\tnote",self.transcript.note]))
                 if product_type == "mRNA":
@@ -434,13 +435,14 @@ class Transcript(object):
                 if feature.strand == "+":
                     outbuff.append("\t".join([feature.start,feature.end]))
                 if self.transcript.product:
-                    if re.findall("similar",self.transcript.product):
-                        if self.transcript.locus_tag:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.locus_tag]))
-                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
-                        else:
-                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.parent[0]]))
-                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
+#                    if re.findall("similar",self.transcript.product):
+                    if self.transcript.prot_desc:
+#                        if self.transcript.locus_tag:
+#                            outbuff.append("\t".join(["\t\t\tproduct",self.transcript.locus_tag]))
+#                            outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.product]))
+#                        else:
+                        outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product])) ###
+                        outbuff.append("\t".join(["\t\t\tprot_desc",self.transcript.prot_desc])) ###
                     else:
                         outbuff.append("\t".join(["\t\t\tproduct",self.transcript.product]))
                 if self.transcript.note:
@@ -594,6 +596,8 @@ class Transcript(object):
         self.transcript = feature
         self.exons = []
         self.cds = []
+        self.locus_tag = ''
+        self.prot_desc = ''
         # five or three prime complete set to false if fails check
         self.fiveprime_complete = True
         self.fiveprime_checked = False
@@ -689,7 +693,7 @@ class Gene(object):
 #                        self.gene.start = ">" + self.gene.start
 #                        self.threeprime_complete = False
 #                        self.threeprime_checked = True
-#                    if (int(re.sub("[<>]","",self.transcript[stops[0][1]].exons[-1].end))
+#                    if (int(re.sub("[<>]","",self.transcript[stops[-1][1]].exons[-1].end))
 #                        == int(re.sub("[<>]","",self.transcript[stops[0][1]].cds[-1].end))):
 #                        self.gene.end = "<" + self.gene.end
 #                        self.fiveprime_complete = False
@@ -734,6 +738,7 @@ class Gene(object):
         self.gene = gene
         self.id = gene.id
         self.transcript = {}
+        self.locus_tag = ''
         self.fiveprime_complete = True
         self.fiveprime_checked = False
         self.threeprime_complete = True
