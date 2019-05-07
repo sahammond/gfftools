@@ -171,19 +171,19 @@ def main():
 
                     # process attributes and print out
                     rec.extend_attr()
-                    print rec.print_record()
+                    print(rec.print_record())
 
                 elif rec.type == 'gene':
                     # genes only get locus_tags
                     if tag:
                         rec.add_locus_tag(tag)
                     rec.extend_attr()
-                    print rec.print_record()
+                    print(rec.print_record())
 
                 else:
                     # non-gene or non-mRNA record
                     rec.extend_attr()
-                    print rec.print_record()
+                    print(rec.print_record())
 
 if __name__ == '__main__':
     main()

@@ -131,7 +131,7 @@ class Transcript(object):
         else:
             # TODO currently only compares to final exon in list for redundancy
             if int(feature.start) == int(self.exons[-1].start):
-                print ("There is already an exon with that start in "
+                print("There is already an exon with that start in "
                         "this transcript. Please check your input.")
             elif int(feature.start) > int(self.exons[-1].start):
                 self.exons.append(feature)
@@ -147,7 +147,7 @@ class Transcript(object):
             self.cds.append(feature)
         else:
             if int(feature.start) == int(self.cds[-1].start):
-                print ("There is already a cds segment with that start in "
+                print("There is already a cds segment with that start in "
                         "this transcript. Please check your input.")
             elif int(feature.start) > int(self.cds[-1].start):
                 self.cds.append(feature)
@@ -629,7 +629,7 @@ class Gene(object):
 
         """
         if feature.id in self.transcript:
-            print "Transcript already associated with gene."
+            print("Transcript already associated with gene.")
         else:
             self.transcript[feature.id] = Transcript(feature)
 

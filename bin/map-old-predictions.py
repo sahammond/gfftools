@@ -60,7 +60,7 @@ def main():
         result = transcripts[trans].get_best()
         if result.pid == 100.0:
             # only want cases where the v3 prediction has a perfect overlap with a v2 one
-            print result.qid, result.sid, result.score
+            print(result.qid, result.sid, result.score)
 
 
 if __name__ == '__main__':

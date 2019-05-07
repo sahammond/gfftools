@@ -34,7 +34,7 @@ class Gene(object):
         elif len(self.mrna) == 1:
             yield (self.mrna[0], self.tag)
         else:
-            print 'no mRNA associated with %s locus_tag %s!' % (self.name, self.tag)
+            print f'no mRNA associated with {self.name} locus_tag {self.tag}!'
 
 
 def main():
@@ -54,7 +54,7 @@ def main():
             try:
                 genes[gid].add_mrna(sid)
             except KeyError:
-                print '%s not in gene table!' % sid
+                print f'{sid} not in gene table!'
 
     # write out all tags
     outname = 'version3-transcript-locus-tags.tsv'

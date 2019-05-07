@@ -75,7 +75,7 @@ def main():
         hit_mrna, hit_gene = load_hits(infile)
 
     with open(gff_file, 'r') as gff:
-        print '##gff-version 3'
+        print('##gff-version 3')
         for line in gff:
             if line[0] == '#':
                 continue
