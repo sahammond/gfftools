@@ -42,7 +42,7 @@ class GFF(object):
     def drop_par(self, par):
         """par is ID of parent to remove from this record"""
         start_par = set(self.parent)
-        drop = set(par)
+        drop = set([par])
         new_par = start_par - drop
         self.parent = list(new_par)
 

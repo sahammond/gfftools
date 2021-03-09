@@ -59,7 +59,7 @@ def load_hits(records):
 
     for rec in records:
         mrna = rec.strip()
-        gene = re.sub('-mRNA-[0-9+]','',mrna)
+        gene = re.sub('-mRNA-[0-9]+','',mrna)
         
         hit_mrna.add(mrna)
         hit_gene.add(gene)
